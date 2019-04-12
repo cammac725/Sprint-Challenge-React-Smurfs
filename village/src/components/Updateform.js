@@ -1,20 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class SmurfForm extends Component {
+class UpdateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       age: '',
       height: ''
-    };
+    }
   }
+
+  handleInputChange = e => {
+    e.preventDefault();
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.addSmurf({
-      ...this.state
-    })
+    let id;
+    let obj = this.props.smurfs.filter(obj => obj.name === this.state.name)[0];
+    if (obj === undefined) {
+      id = 0;
+    } else {
+      id = obj.id
+    }
+    this.props.updateSmurf(this.state, id)
     this.setState({
       name: '',
       age: '',
@@ -22,13 +32,10 @@ class SmurfForm extends Component {
     });
   }
 
-  handleInputChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
   render() {
     return (
       <div className="Smurf-form">
+        <h3>Update this Smurf's info</h3>
         <form className="form" onSubmit={this.handleSubmit}>
           <input
             type='text'
@@ -51,11 +58,11 @@ class SmurfForm extends Component {
             value={this.state.height}
             name="height"
           />
-          <button className='form-button' type="submit">Add to the village</button>
+          <button className='form-button' type="submit">Update Me</button>
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default SmurfForm;
+export default UpdateForm;
