@@ -40,7 +40,7 @@ let smurfs = [
   },
   {
     id: 4,
-    name: 'angel Smurf',
+    name: 'Angel Smurf',
     age: 190,
     height: '8cm'
   },
