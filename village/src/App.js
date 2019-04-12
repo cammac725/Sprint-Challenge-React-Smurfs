@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
+import UpdateForm from './components/Updateform';
 import Smurfs from './components/Smurfs';
 import Header from './components/Header';
 
@@ -40,9 +41,14 @@ class App extends Component {
       .catch(err => console.log(err))
   }
 
-  // add any needed code to ensure that the smurfs collection exists on state and it has data coming from the server
-  // Notice what your map function is looping over and returning inside of Smurfs.
-  // You'll need to make sure you have the right properties on state and pass them down to props.
+  updateSmurf = (id, smurf) => {
+    axios.put(`http://localhost:3333/smurfs/${id}`, smurf)
+      .then(res => {
+        this.setState({ smurfs: res.data });
+        this.props.history.push('/smurfs');
+      })
+      .catch(err => console.log(err))
+  }
 
   render() {
     return (
@@ -54,13 +60,23 @@ class App extends Component {
           render={props => <SmurfForm {...props} addSmurf={this.addSmurf} />}
         />
         <Route
+          path='/update-form'
+          render={props =>
+            <UpdateForm
+              {...props}
+              updateSmurf={this.updateSmurf}
+            />
+          }
+        />
+        <Route
           exact
           path='/'
           render={props =>
             <Smurfs
               {...props}
               smurfs={this.state.smurfs}
-              deleteSmurf={this.deleteSmurf} />}
+              deleteSmurf={this.deleteSmurf}
+              updateSmurf={this.updateSmurf} />}
         />
 
       </div>
